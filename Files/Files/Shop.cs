@@ -10,7 +10,8 @@ namespace Files
     {
         public List<Good> goods = new List<Good>();
         public List<Purchase> purchases = new List<Purchase>();
-        private GoodStore goodStore = new GoodStore("C:\\temp\\Goods");
+        private GoodStore goodStore = new GoodStore("D:\\temp\\Goods");
+        private PurchaseStore purchaseStore = new PurchaseStore("D:\\temp\\Purchase\\");
         public void Run()
         {
             if (goodStore.IsGoodsStored())
@@ -25,16 +26,19 @@ namespace Files
                 if (key.Key == ConsoleKey.G)
                 {
                     RunGood();
+                    goodStore.SaveGoods(goods);
                 }
                 if (key.Key == ConsoleKey.P)
                 {
-                    RunPurchase();
+                    if (RunAndFindPurchase())
+                    {
+                        purchaseStore.SaveLastPurchase(purchases);
+                    }
                 }
                 if(key.Key == ConsoleKey.Escape)
                 {
                     throw new OperationCanceledException();
                 }
-                goodStore.SaveGoods(goods);
             }
 
         }
@@ -62,19 +66,16 @@ namespace Files
 
 
         }
-        public void RunPurchase()
+        public bool RunAndFindPurchase()
         {
             MenegerOfGoods menegerOfGoods = new MenegerOfGoods(goods);
             MenegerOfPurchase menegerOfPurchase = new MenegerOfPurchase(menegerOfGoods, purchases);
-            Console.WriteLine("Enter good name");
-            var name = Console.ReadLine();
-            if (menegerOfPurchase.Find(name))
+            var (name, isName) = menegerOfPurchase.FindName();
+            if (isName)
             {
                 purchases.Add(menegerOfPurchase.Add(name));
             }
-
-
-
+            return isName;
         }
     }
 }

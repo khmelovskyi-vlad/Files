@@ -15,25 +15,25 @@ namespace Files
         }
         public MenegerOfGoods MenegerOfGoods;
         public List<Purchase> Purchases;
-        private bool findGood;
-        public bool Find(string name)
+        public (string name, bool isName)FindName()
         {
+            Console.WriteLine("Enter good name");
             for (int i = 0; i < 6; i++)
             {
+                var name = Console.ReadLine();
                 if (i == 5)
                 {
                     Console.WriteLine("You are stupid");
                     Console.WriteLine("Don`t have your good");
-                    return false;
+                    return (name, false);
                 }
-                findGood = MenegerOfGoods.Find(name);
-                if (findGood)
+                if (MenegerOfGoods.Find(name))
                 {
-                    break;
+                    return (name, true);
                 }
-                Console.WriteLine("Don`t have this good");
+                Console.WriteLine("Don`t have this good, write new please");
             }
-            return true;
+            return ("", false);
         }
         public Purchase Add(string name)
         {

@@ -22,7 +22,6 @@ namespace Files
         {
             var goodsJson = File.ReadAllText(FilePath);
             return JsonConvert.DeserializeObject<List<Good>>(goodsJson);
-
         }
         public void SaveGoods(IEnumerable<Good> goods)
         {
